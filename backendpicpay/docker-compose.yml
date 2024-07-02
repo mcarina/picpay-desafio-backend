@@ -37,13 +37,25 @@ services:
       - "8000:8000"
     environment:
       - PYTHONBUFFERED=1
-      - PORT=8000
     depends_on:
       - db
     networks:
       - webgdjango
     volumes:
-      - .:/app
+      - .:/app/
+      - ./static:/app/static
+
+  nginx:
+    image: nginx:latest
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf
+      - ./static:/app/static
+    depends_on:
+      - api
+    networks:
+      - webgdjango
 
 networks:
   webgdjango:
